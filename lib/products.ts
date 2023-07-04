@@ -16,7 +16,7 @@ interface BackendProduct {
     };
 }
 
-const CMS_URL = 'http://127.0.0.1:1337';
+const CMS_URL = process.env.CMS_URL;
 
 export const getProduct = async(id: string): Promise<Product> => {
     const { data }: { data: BackendProduct } = await fetchJson(`${CMS_URL}/api/products/${id}`);
