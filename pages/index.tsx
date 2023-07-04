@@ -1,7 +1,23 @@
 import Head from 'next/head';
 import Title from '../components/Title';
+import { Product, getProducts } from '../lib/products';
+import Link from 'next/link';
 
-const HomePage: React.FC = () => {
+export async function getStaticProps() {
+    const products = await getProducts();
+    return {
+        props: {
+            products,
+        },
+        revalidate: 5 * 60,
+    };
+}
+
+interface HomePageProps {
+    products: Product[];
+};
+
+const HomePage: React.FC<HomePageProps> = ({ products }) => {
   return (
     <>
         <Head>
@@ -11,9 +27,15 @@ const HomePage: React.FC = () => {
             <Title>
                 Next Shop
             </Title>
-            <p>
-                [TODO: display products]
-            </p>
+            <ul>
+                {
+                    products.map((product) => (
+                        <li key={product.id}>
+                            <Link href={`/products/${product.id}`}>{product.title}</Link>
+                        </li>
+                    ))
+                }
+            </ul>
         </main>
     </>
   );
