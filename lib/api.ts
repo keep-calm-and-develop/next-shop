@@ -1,6 +1,6 @@
 export class ApiError extends Error {
     public status: number;
-    constructor(url, status) {
+    constructor(url: string, status: number) {
         super(`'${url} returned ${status}`);
 
         if (Error.captureStackTrace) {
@@ -12,7 +12,8 @@ export class ApiError extends Error {
     }
 }
 
-export async function fetchJson(url) {
+export async function fetchJson(url: string) {
+    console.log('[fetchJson]', url);
     const response = await fetch(url);
     if (!response.ok) {
         throw new ApiError(url, response.status);

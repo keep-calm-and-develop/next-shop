@@ -2,6 +2,7 @@ import Head from 'next/head';
 import Title from '../components/Title';
 import { Product, getProducts } from '../lib/products';
 import Link from 'next/link';
+import ProductCard from '../components/ProductCard';
 
 export async function getStaticProps() {
     const products = await getProducts();
@@ -27,11 +28,11 @@ const HomePage: React.FC<HomePageProps> = ({ products }) => {
             <Title>
                 Next Shop
             </Title>
-            <ul>
+            <ul className='grid grid-cols-1 gap:4 md:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3'>
                 {
                     products.map((product) => (
                         <li key={product.id}>
-                            <Link href={`/products/${product.id}`}>{product.title}</Link>
+                            <ProductCard product={product} />
                         </li>
                     ))
                 }
