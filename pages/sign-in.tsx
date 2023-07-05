@@ -5,6 +5,7 @@ import { Input } from "../components/Input";
 import Page from "../components/Page";
 import { SignIn } from "../lib/sign-in";
 import { fetchJson } from "../lib/api";
+import { useRouter } from "next/router";
 
 const SignInPage: React.FC = () => {
     const [email, setEmail] = useState('alice@example.com');
@@ -13,6 +14,8 @@ const SignInPage: React.FC = () => {
         loading: false,
         error: false,
     });
+
+    const router = useRouter();
 
     const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
         event.preventDefault();
@@ -24,6 +27,7 @@ const SignInPage: React.FC = () => {
                 body: JSON.stringify({ email, password }),
             });
             setStatus({ loading: false, error: false });
+            router.push('/');
         } catch (error) {
             setStatus({ loading: false, error: true });
         }
