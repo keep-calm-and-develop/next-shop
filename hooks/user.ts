@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { fetchJson } from '../lib/api';
 
+const USER_QUERY_KEY = 'user';
 
 export const useSignIn = (): {
     signIn: (email: string, password: string) => Promise<boolean>;
@@ -22,7 +23,7 @@ export const useSignIn = (): {
     const signIn = useCallback(async (email: string, password: string) => {
         try {
             const user = await loginMutation.mutateAsync({ email, password });
-            queryClient.setQueryData('user', user);
+            queryClient.setQueryData(USER_QUERY_KEY, user);
             return true;
         } catch (error) {
             return false;
@@ -36,13 +37,19 @@ export const useSignIn = (): {
     };
 };
 
+export const useSignOut = (): () => Promise<void> => {
+    const queryClient = useQueryClient();
+    const logoutMutation = useMutation(async () => fetchJson('/api/logout'));
+    return (async () => {
+        await logoutMutation.mutateAsync();
+        queryClient.setQueryData(USER_QUERY_KEY, undefined);
+    });
+};
+
 type User = { id: string, name: string };
 
-export const useUser = (): {
-    user: undefined | User,
-    handleSignOut: () => Promise<void>;
-} => {
-    const { data: user } = useQuery('user', async () => {
+export const useUser = (): undefined | User => {
+    const { data: user } = useQuery(USER_QUERY_KEY, async () => {
         try {
             return await fetchJson('/api/user');
         } catch (error) {
@@ -53,9 +60,5 @@ export const useUser = (): {
         staleTime: 30 * 1000,
     });
 
-    const handleSignOut = useCallback(async () => {
-        await fetchJson('/api/logout');
-    }, []);
-
-    return { user, handleSignOut };
+    return user;
 };

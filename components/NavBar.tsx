@@ -1,13 +1,14 @@
 import Link from 'next/link';
 import React from 'react';
-import { useUser } from '../hooks/user';
+import { useSignOut, useUser } from '../hooks/user';
 
 interface NavBarProps {
 
 }
 
 const NavBar: React.FC<NavBarProps> = ({}) => {
-    const { user, handleSignOut } = useUser();
+    const user = useUser();
+    const handleSignOut = useSignOut();
     return (
         <nav className='px-2 py-1'>
             <ul className='flex gap-2'>
