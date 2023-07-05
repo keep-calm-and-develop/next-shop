@@ -4,6 +4,7 @@ import Field from "../components/Field";
 import { Input } from "../components/Input";
 import Page from "../components/Page";
 import { SignIn } from "../lib/sign-in";
+import { fetchJson } from "../lib/api";
 
 const SignInPage: React.FC = () => {
     const [email, setEmail] = useState('alice@example.com');
@@ -17,7 +18,11 @@ const SignInPage: React.FC = () => {
         event.preventDefault();
         setStatus({ loading: true, error: false });
         try {
-            const { jwt, user } = await SignIn(email, password);
+            await fetchJson('/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password }),
+            });
             setStatus({ loading: false, error: false });
         } catch (error) {
             setStatus({ loading: false, error: true });
