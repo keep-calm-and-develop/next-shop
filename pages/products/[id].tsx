@@ -2,6 +2,8 @@ import Image from "next/image";
 import Page from "../../components/Page";
 import { ApiError } from "../../lib/api";
 import { Product, getProduct, getProducts } from "../../lib/products";
+import { useUser } from "../../hooks/user";
+import { AddToCartWidget } from "../../components/AddToCartWidget";
 
 export async function getStaticPaths() {
     const products = await getProducts();
@@ -34,6 +36,7 @@ interface ProductPageProps {
 }
 
 const ProductPage: React.FC<ProductPageProps> = ({ product }) => {
+    const user = useUser();
     return (
         <Page title={product.title}>
             <div className="flex flex-col lg:flex-row">
@@ -53,6 +56,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ product }) => {
                     <p className="text-lg font-bold mt-2">
                         ${product.price}
                     </p>
+                    {user && <AddToCartWidget productId={product.id} />}
                 </div>
             </div>
         </Page>
