@@ -1,0 +1,6 @@
+- Complete app directory lessons
+- Add update and remove action for each item in cart
+- Pre-populate item quantity in product page
+- Show badge over cart
+- Improve styling
+- Use Stripe or Razorpay payment gateway
