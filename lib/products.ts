@@ -1,15 +1,15 @@
 import { fetchJson } from "./api";
 
 export interface Product {
-    id: string;
+    id: number;
     title: string;
     description: string;
     price: number;
     pictureURL: string;
 }
 
-interface BackendProduct {
-    id: string;
+export interface BackendProduct {
+    id: number;
     attributes: {
         title: string;
         description: string;

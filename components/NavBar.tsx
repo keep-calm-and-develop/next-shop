@@ -22,6 +22,9 @@ const NavBar: React.FC<NavBarProps> = ({}) => {
                     user 
                         ? (<>
                             <li>
+                                <Link href="/cart">Cart</Link>
+                            </li>
+                            <li>
                                 {user.name}
                             </li>
                             <li>
